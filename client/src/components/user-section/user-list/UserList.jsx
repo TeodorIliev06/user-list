@@ -1,11 +1,15 @@
 import Spinner from "../../spinner/Spinner";
 import UserListItem from "./user-list-item/UserListItem";
 
+import { useGetAllUsers } from "../../../hooks/useUsers";
+
 export default function UserList() {
+    const [users, isLoading] = useGetAllUsers();
+
     return (
         <div className="table-wrapper">
-            {/* <Spinner /> */}
-            
+            {isLoading && <Spinner />}
+
             {/* <div class="table-overlap">
         <svg
           aria-hidden="true"
@@ -161,15 +165,14 @@ export default function UserList() {
                     </tr>
                 </thead>
                 <tbody>
-                <UserListItem />
-                    {/* {users.map(user =>
+                    {users.map(user =>
                         <UserListItem
                             key={user._id}
                             user={user}
-                            onUserDetailsClick={onUserDetailsClick}
-                            onUserDeleteClick={onUserDeleteClick}
+                        // onUserDetailsClick={onUserDetailsClick}
+                        // onUserDeleteClick={onUserDeleteClick}
                         />
-                    )} */}
+                    )}
                 </tbody>
             </table>
         </div>

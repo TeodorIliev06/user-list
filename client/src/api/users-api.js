@@ -9,8 +9,11 @@ export const getAll = async () => {
 	return users;
 };
 
+const create = (userData) => request.post(`${BASE_URL}`, userData);
+
 const usersAPI = {
 	getAll,
+	create,
 };
 
 export default usersAPI;

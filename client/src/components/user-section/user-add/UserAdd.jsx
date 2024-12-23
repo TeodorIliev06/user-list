@@ -1,12 +1,33 @@
-export default function UserAdd() {
+export default function UserAdd({
+    onClose,
+    onSave,
+}) {
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const userData = {
+            ...Object.fromEntries(formData),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            address: {
+                country: formData.get('country'),
+                city: formData.get('city'),
+                street: formData.get('street'),
+                streetNumber: formData.get('streetNumber'),
+            },
+        };
+
+        onSave(userData);
+    };
+
     return (
         <div className="overlay">
-            <div className="backdrop" />
+            <div className="backdrop" onClick={onClose} />
             <div className="modal">
                 <div className="user-container">
                     <header className="headers">
                         <h2>Edit User/Add User</h2>
-                        <button className="btn close">
+                        <button className="btn close" onClick={onClose}>
                             <svg
                                 aria-hidden="true"
                                 focusable="false"
@@ -24,7 +45,7 @@ export default function UserAdd() {
                             </svg>
                         </button>
                     </header>
-                    <form>
+                    <form onSubmit={submitHandler}>
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="firstName">First name</label>
@@ -118,7 +139,7 @@ export default function UserAdd() {
                             <button id="action-save" className="btn" type="submit">
                                 Save
                             </button>
-                            <button id="action-cancel" className="btn" type="button">
+                            <button id="action-cancel" className="btn" type="button" onClick={onClose}>
                                 Cancel
                             </button>
                         </div>
