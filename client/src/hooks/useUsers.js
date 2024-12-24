@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import usersAPI from "../api/users-api";
 
@@ -6,16 +6,35 @@ export function useGetAllUsers() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        usersAPI.getAll()
-            .then(result => {
-                setUsers(result);
-                setIsLoading(false);
-            });
+    const fetchUsers = useCallback(async () => {
+        setIsLoading(true);
+        const result = await usersAPI.getAll();
+        setUsers(result);
+        setIsLoading(false);
     }, []);
 
-    return [users, isLoading];
-};
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
+
+    return [users, isLoading, fetchUsers];
+}
+
+export function useGetUserById(userId) {
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+            setIsLoading(true);
+            const result = await usersAPI.getOne(userId);
+            setUser(result);
+            setIsLoading(false);
+        })();
+    }, [userId]);
+
+    return [user, isLoading];
+}
 
 export function useCreateUser() {
     const userCreateHandler =

@@ -1,8 +1,11 @@
+import { useUserActionContext } from "../../../../contexts/UserActionContext";
 import { formatDate } from "../../../../utils/dateUtils";
 
 export default function UserListItem({
     user
 }) {
+    const { onUserDetailsClick } = useUserActionContext();
+
     return (
         <tr>
             <td>
@@ -49,7 +52,7 @@ export default function UserListItem({
                         ></path>
                     </svg>
                 </button>
-                <button className="btn info-btn" title="Info">
+                <button className="btn info-btn" title="Info" onClick={() => onUserDetailsClick(user._id)}>
                     <svg
                         aria-hidden="true"
                         focusable="false"

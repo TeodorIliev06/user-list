@@ -36,26 +36,37 @@ export default function UserSection() {
     };
 
     return (
-        <section className="card users-container">
-            <Search />
-            
-            <UserList />
-            
-            {showAddUser && (
-                <UserAdd
-                    onClose={addUserCloseHandler}
-                    onSave={addUserSaveHandler}
+        <UserActionContextProvider onUserDetailsClick={userDetailsClickHandler}>
+            <section className="card users-container">
+                <Search />
+
+                <UserList
+                    users={users}
+                    isLoading={isLoading}
                 />
-            )}
 
-            {/* <UserDetails /> */}
+                {showAddUser && (
+                    <UserAdd
+                        onClose={addUserCloseHandler}
+                        onSave={addUserSaveHandler}
+                    />
+                )}
 
-            {/* <UserDelete /> */}
+                {showUserDetailsById && (
+                    <UserDetails
+                        userId={showUserDetailsById}
+                        onClose={() => setShowUserDetailsById(null)}
+                    />
+                )}
 
-            <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
-            
-            <Pagination />
-        </section>
+                {/* <UserDelete /> */}
+
+                <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
+
+                <Pagination />
+            </section>
+        </UserActionContextProvider>
+
 
     );
 }
