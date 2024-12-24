@@ -1,6 +1,7 @@
 import * as request from './requester';
 
-const BASE_URL = 'http://localhost:3030/data/testUsers';
+//TODO: fix authentication when using data/testUsers
+const BASE_URL = 'http://localhost:3030/jsonstore/users';
 
 export const getAll = async () => {
 	const result = await request.get(BASE_URL);
