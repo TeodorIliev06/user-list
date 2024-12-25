@@ -14,12 +14,15 @@ export const getOne = (userId) => request.get(`${BASE_URL}/${userId}`);
 
 const create = (userData) => request.post(`${BASE_URL}`, userData);
 const remove = (userId) => request.del(`${BASE_URL}/${userId}`);
+const update = (userId, userData) =>
+	request.put(`${BASE_URL}/${userId}`, userData);
 
 const usersAPI = {
 	getAll,
 	getOne,
 	create,
 	remove,
+	update
 };
 
 export default usersAPI;

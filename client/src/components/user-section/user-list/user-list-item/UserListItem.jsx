@@ -4,7 +4,11 @@ import { formatDate } from "../../../../utils/dateUtils";
 export default function UserListItem({
     user
 }) {
-    const { onUserDetailsClick, onUserDeleteClick } = useUserActionContext();
+    const {
+        onUserDetailsClick,
+        onUserDeleteClick,
+        onUserEditClick,
+    } = useUserActionContext();
 
     return (
         <tr>
@@ -18,7 +22,7 @@ export default function UserListItem({
             <td>{user.phoneNumber}</td>
             <td>{formatDate(user.createdAt)}</td>
             <td className="actions">
-                <button className="btn edit-btn" title="Edit">
+                <button className="btn edit-btn" title="Edit" onClick={() => onUserEditClick(user._id)}>
                     <svg
                         aria-hidden="true"
                         focusable="false"

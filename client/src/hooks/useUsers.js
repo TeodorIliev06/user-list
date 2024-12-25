@@ -43,6 +43,13 @@ export function useCreateUser() {
     return userCreateHandler;
 };
 
+export function useUpdateUser() {
+    const userUpdateHandler = 
+        async (userId, userData) => await usersAPI.update(userId, userData);
+        
+    return userUpdateHandler;
+}
+
 export function useDeleteUser() {
     const userDeleteHandler =
         async (userId) => await usersAPI.remove(userId);

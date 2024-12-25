@@ -1,15 +1,14 @@
 import { createContext, useContext } from "react";
 
-export const UserActionContext = createContext(null);
+export const UserActionContext = createContext({
+    onUserDetailsClick: () => {},
+    onUserDeleteClick: () => {},
+    onUserEditClick: () => {}
+});
 
-export function UserActionContextProvider({ children, onUserDetailsClick, onUserDeleteClick }) {
-    const contextValue = {
-        onUserDetailsClick,
-        onUserDeleteClick,
-    };
-
+export function UserActionContextProvider({ children, value }) {
     return (
-        <UserActionContext.Provider value={contextValue}>
+        <UserActionContext.Provider value={value}>
             {children}
         </UserActionContext.Provider>
     );

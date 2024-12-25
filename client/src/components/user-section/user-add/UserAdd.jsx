@@ -53,7 +53,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="firstName" name="firstName" type="text" />
+                                    <input id="firstName" name="firstName" type="text" defaultValue="" />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -62,7 +62,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-user" />
                                     </span>
-                                    <input id="lastName" name="lastName" type="text" />
+                                    <input id="lastName" name="lastName" type="text" defaultValue="" />
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-envelope" />
                                     </span>
-                                    <input id="email" name="email" type="text" />
+                                    <input id="email" name="email" type="text" defaultValue="" />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -82,7 +82,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-phone" />
                                     </span>
-                                    <input id="phoneNumber" name="phoneNumber" type="text" />
+                                    <input id="phoneNumber" name="phoneNumber" type="text" defaultValue="" />
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ export default function UserAdd({
                                 <span>
                                     <i className="fa-solid fa-image" />
                                 </span>
-                                <input id="imageUrl" name="imageUrl" type="text" />
+                                <input id="imageUrl" name="imageUrl" type="text" defaultValue="" />
                             </div>
                         </div>
                         <div className="form-row">
@@ -102,7 +102,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="country" name="country" type="text" />
+                                    <input id="country" name="country" type="text" defaultValue="" />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -111,7 +111,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-city" />
                                     </span>
-                                    <input id="city" name="city" type="text" />
+                                    <input id="city" name="city" type="text" defaultValue="" />
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-map" />
                                     </span>
-                                    <input id="street" name="street" type="text" />
+                                    <input id="street" name="street" type="text" defaultValue="" />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -131,7 +131,7 @@ export default function UserAdd({
                                     <span>
                                         <i className="fa-solid fa-house-chimney" />
                                     </span>
-                                    <input id="streetNumber" name="streetNumber" type="text" />
+                                    <input id="streetNumber" name="streetNumber" type="text" defaultValue="" />
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ import UserAdd from "./user-add/UserAdd";
 import UserDelete from "./user-delete/UserDelete";
 import UserDetails from "./user-details/UserDetails";
 import UserList from "./user-list/UserList";
+import UserEdit from "./user-edit/UserEdit";
 
 import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
 import { useState } from "react";
@@ -14,6 +15,7 @@ export default function UserSection() {
     const [showAddUser, setShowAddUser] = useState(false);
     const [showUserDetailsById, setShowUserDetailsById] = useState(null);
     const [showUserDeleteById, setShowUserDeleteById] = useState(null);
+    const [showUserEditById, setShowUserEditById] = useState(null);
 
     const createUser = useCreateUser();
 
@@ -28,16 +30,28 @@ export default function UserSection() {
         setShowUserDeleteById(userId);
     }
 
+    const userEditClickHandler = (userId) => {
+        setShowUserEditById(userId);
+    }
+
     const addUserSaveHandler = async (userData) => {
         try {
-            console.log(userData);
-
             await createUser(userData);
             await refetchUsers();
 
             setShowAddUser(false);
         } catch (error) {
             alert(`Failed to create user: ${error.message}`);
+        }
+    };
+
+    const editUserHandler = async () => {
+        try {
+            await refetchUsers();
+
+            setShowUserEditById(null);
+        } catch (error) {
+            alert(error.message);
         }
     };
 
@@ -51,11 +65,14 @@ export default function UserSection() {
         }
     }
 
+    const userActionContext = {
+        onUserDetailsClick: userDetailsClickHandler,
+        onUserDeleteClick: userDeleteClickHandler,
+        onUserEditClick: userEditClickHandler
+    };
+
     return (
-        <UserActionContextProvider
-            onUserDetailsClick={userDetailsClickHandler}
-            onUserDeleteClick={userDeleteClickHandler}
-        >
+        <UserActionContextProvider value={userActionContext}>
             <section className="card users-container">
                 <Search />
 
@@ -83,6 +100,14 @@ export default function UserSection() {
                         userId={showUserDeleteById}
                         onClose={() => setShowUserDeleteById(null)}
                         onDelete={deleteUserHandler}
+                    />
+                )}
+
+                {showUserEditById && (
+                    <UserEdit
+                        userId={showUserEditById}
+                        onClose={() => setShowUserEditById(null)}
+                        onEdit={editUserHandler}
                     />
                 )}
 
