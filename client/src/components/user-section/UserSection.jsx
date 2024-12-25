@@ -13,6 +13,7 @@ export default function UserSection() {
     const [users, isLoading, refetchUsers] = useGetAllUsers();
     const [showAddUser, setShowAddUser] = useState(false);
     const [showUserDetailsById, setShowUserDetailsById] = useState(null);
+    const [showUserDeleteById, setShowUserDeleteById] = useState(null);
 
     const createUser = useCreateUser();
 
@@ -23,20 +24,38 @@ export default function UserSection() {
         setShowUserDetailsById(userId);
     }
 
+    const userDeleteClickHandler = (userId) => {
+        setShowUserDeleteById(userId);
+    }
+
     const addUserSaveHandler = async (userData) => {
         try {
-            const createdUser = await createUser(userData);
+            console.log(userData);
 
-            //Quick fix, should be handled in api call
+            await createUser(userData);
             await refetchUsers();
+
             setShowAddUser(false);
         } catch (error) {
             alert(`Failed to create user: ${error.message}`);
         }
     };
 
+    const deleteUserHandler = async () => {
+        try {
+            await refetchUsers();
+
+            setShowUserDeleteById(null);
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     return (
-        <UserActionContextProvider onUserDetailsClick={userDetailsClickHandler}>
+        <UserActionContextProvider
+            onUserDetailsClick={userDetailsClickHandler}
+            onUserDeleteClick={userDeleteClickHandler}
+        >
             <section className="card users-container">
                 <Search />
 
@@ -59,7 +78,13 @@ export default function UserSection() {
                     />
                 )}
 
-                {/* <UserDelete /> */}
+                {showUserDeleteById && (
+                    <UserDelete
+                        userId={showUserDeleteById}
+                        onClose={() => setShowUserDeleteById(null)}
+                        onDelete={deleteUserHandler}
+                    />
+                )}
 
                 <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
 

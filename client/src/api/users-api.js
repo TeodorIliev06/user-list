@@ -10,14 +10,16 @@ export const getAll = async () => {
 	return users;
 };
 
-const create = (userData) => request.post(`${BASE_URL}`, userData);
-
 export const getOne = (userId) => request.get(`${BASE_URL}/${userId}`);
+
+const create = (userData) => request.post(`${BASE_URL}`, userData);
+const remove = (userId) => request.del(`${BASE_URL}/${userId}`);
 
 const usersAPI = {
 	getAll,
 	getOne,
 	create,
+	remove,
 };
 
 export default usersAPI;

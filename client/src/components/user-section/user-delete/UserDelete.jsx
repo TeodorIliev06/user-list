@@ -1,12 +1,30 @@
-export default function UserDelete() {
+import { useDeleteUser } from "../../../hooks/useUsers";
+
+export default function UserDelete({
+    userId,
+    onClose,
+    onDelete,
+}) {
+    const deleteUser = useDeleteUser();
+
+    const deleteUserHandler = async () => {
+        try {
+            await deleteUser(userId);
+            onDelete(); 
+            onClose();
+        } catch (error) {
+            alert(`Failed to delete user: ${error.message}`);
+        }
+    };
+
     return (
         <div className="overlay">
-            <div className="backdrop" />
+            <div className="backdrop" onClick={onClose} />
             <div className="modal">
                 <div className="confirm-container">
                     <header className="headers">
                         <h2>Are you sure you want to delete this account?</h2>
-                        <button className="btn close">
+                        <button className="btn close" onClick={onClose}>
                             <svg
                                 aria-hidden="true"
                                 focusable="false"
@@ -26,10 +44,20 @@ export default function UserDelete() {
                     </header>
                     <div className="actions">
                         <div id="form-actions">
-                            <button id="action-save" className="btn" type="submit">
+                            <button
+                                id="action-save"
+                                className="btn"
+                                type="submit"
+                                onClick={deleteUserHandler}
+                            >
                                 Delete
                             </button>
-                            <button id="action-cancel" className="btn" type="button">
+                            <button
+                                id="action-cancel"
+                                className="btn"
+                                type="button"
+                                onClick={onClose}
+                            >
                                 Cancel
                             </button>
                         </div>

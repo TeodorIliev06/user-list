@@ -4,7 +4,7 @@ import { formatDate } from "../../../../utils/dateUtils";
 export default function UserListItem({
     user
 }) {
-    const { onUserDetailsClick } = useUserActionContext();
+    const { onUserDetailsClick, onUserDeleteClick } = useUserActionContext();
 
     return (
         <tr>
@@ -35,7 +35,7 @@ export default function UserListItem({
                         ></path>
                     </svg>
                 </button>
-                <button className="btn delete-btn" title="Delete">
+                <button className="btn delete-btn" title="Delete" onClick={() => onUserDeleteClick(user._id)}>
                     <svg
                         aria-hidden="true"
                         focusable="false"

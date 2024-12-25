@@ -42,3 +42,10 @@ export function useCreateUser() {
 
     return userCreateHandler;
 };
+
+export function useDeleteUser() {
+    const userDeleteHandler =
+        async (userId) => await usersAPI.remove(userId);
+
+    return userDeleteHandler;
+};

@@ -169,7 +169,6 @@ export default function UserList({
                         <UserListItem
                             key={user._id}
                             user={user}
-                        // onUserDeleteClick={onUserDeleteClick}
                         />
                     )}
                 </tbody>
