@@ -1,8 +1,19 @@
-export async function requester(method, url, data) {
+import { getAccessToken } from "../utils/authUtils";
+
+export async function requester(method, url, data, skipAuth = false) {
 	const options = {};
 
 	if (method !== "GET") {
 		options.method = method;
+	}
+
+	const accessToken = getAccessToken();
+
+	if (accessToken && !skipAuth) {
+		options.headers = {
+			...options.headers,
+			"X-Authorization": accessToken,
+		};
 	}
 
 	if (data) {

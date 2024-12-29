@@ -73,48 +73,51 @@ export default function UserSection() {
 
     return (
         <UserActionContextProvider value={userActionContext}>
-            <section className="card users-container">
-                <Search />
+            <div className="auth">
+                <section className="card users-container">
+                    <Search />
 
-                <UserList
-                    users={users}
-                    isLoading={isLoading}
-                />
-
-                {showAddUser && (
-                    <UserAdd
-                        onClose={addUserCloseHandler}
-                        onSave={addUserSaveHandler}
+                    <UserList
+                        users={users}
+                        isLoading={isLoading}
                     />
-                )}
 
-                {showUserDetailsById && (
-                    <UserDetails
-                        userId={showUserDetailsById}
-                        onClose={() => setShowUserDetailsById(null)}
-                    />
-                )}
+                    {showAddUser && (
+                        <UserAdd
+                            onClose={addUserCloseHandler}
+                            onSave={addUserSaveHandler}
+                        />
+                    )}
 
-                {showUserDeleteById && (
-                    <UserDelete
-                        userId={showUserDeleteById}
-                        onClose={() => setShowUserDeleteById(null)}
-                        onDelete={deleteUserHandler}
-                    />
-                )}
+                    {showUserDetailsById && (
+                        <UserDetails
+                            userId={showUserDetailsById}
+                            onClose={() => setShowUserDetailsById(null)}
+                        />
+                    )}
 
-                {showUserEditById && (
-                    <UserEdit
-                        userId={showUserEditById}
-                        onClose={() => setShowUserEditById(null)}
-                        onEdit={editUserHandler}
-                    />
-                )}
+                    {showUserDeleteById && (
+                        <UserDelete
+                            userId={showUserDeleteById}
+                            onClose={() => setShowUserDeleteById(null)}
+                            onDelete={deleteUserHandler}
+                        />
+                    )}
 
-                <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
+                    {showUserEditById && (
+                        <UserEdit
+                            userId={showUserEditById}
+                            onClose={() => setShowUserEditById(null)}
+                            onEdit={editUserHandler}
+                        />
+                    )}
 
-                <Pagination />
-            </section>
+                    <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
+
+                    <Pagination />
+                </section>
+            </div>
+
         </UserActionContextProvider>
 
 
