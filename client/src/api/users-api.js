@@ -1,11 +1,9 @@
 import * as request from './requester';
 
-//TODO: fix authentication when using data/testUsers
 const BASE_URL = 'http://localhost:3030/data/testUsers';
-//const BASE_URL = 'http://localhost:3030/jsonstore/users';
 
-export const getAll = async () => {
-	const result = await request.get(BASE_URL);
+export const getAll = async (query = "") => {
+	const result = await request.get(`${BASE_URL}${query}`);
 	
 	const users = Object.values(result);
 

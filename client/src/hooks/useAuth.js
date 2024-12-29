@@ -7,7 +7,6 @@ export const useLogin = () => {
 		const password = "admin";
 
 		const { password: _, ...result } = await login(email, password);
-		console.log(result);
 
 		return result;
 	};

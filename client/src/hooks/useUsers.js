@@ -2,16 +2,29 @@ import { useCallback, useEffect, useState } from 'react'
 
 import usersAPI from "../api/users-api";
 
-export function useGetAllUsers() {
+export function useGetAllUsers({ criteria, value }) {
     const [users, setUsers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetchUsers = useCallback(async () => {
         setIsLoading(true);
-        const result = await usersAPI.getAll();
-        setUsers(result);
-        setIsLoading(false);
-    }, []);
+
+        try {
+            let query = "";
+
+            if (criteria && value) {
+                const encodedValue = encodeURIComponent(`"${value}"`);
+                query = `where=${criteria} LIKE ${encodedValue}`;
+            }
+
+            const result = await usersAPI.getAll(query ? `?${query}` : "");
+            setUsers(result);
+        } catch (err) {
+            alert(err.message || "Failed to fetch users.");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [criteria, value]);
 
     useEffect(() => {
         fetchUsers();
@@ -44,9 +57,9 @@ export function useCreateUser() {
 };
 
 export function useUpdateUser() {
-    const userUpdateHandler = 
+    const userUpdateHandler =
         async (userId, userData) => await usersAPI.update(userId, userData);
-        
+
     return userUpdateHandler;
 }
 

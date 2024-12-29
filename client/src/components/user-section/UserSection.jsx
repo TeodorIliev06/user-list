@@ -1,3 +1,6 @@
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+
 import Pagination from "../pagination/Pagination";
 import Search from "../search/Search";
 import UserAdd from "./user-add/UserAdd";
@@ -7,11 +10,16 @@ import UserList from "./user-list/UserList";
 import UserEdit from "./user-edit/UserEdit";
 
 import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
-import { useState } from "react";
 import { UserActionContextProvider } from "../../contexts/UserActionContext";
 
 export default function UserSection() {
-    const [users, isLoading, refetchUsers] = useGetAllUsers();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [users, isLoading, refetchUsers] = useGetAllUsers({
+        criteria: searchParams.get("criteria") || "",
+        value: searchParams.get("value") || "",
+    });
+
     const [showAddUser, setShowAddUser] = useState(false);
     const [showUserDetailsById, setShowUserDetailsById] = useState(null);
     const [showUserDeleteById, setShowUserDeleteById] = useState(null);
@@ -65,6 +73,14 @@ export default function UserSection() {
         }
     }
 
+    const searchHandler = (criteria, value) => {
+        if (criteria && value) {
+            setSearchParams({ criteria, value });
+        } else {
+            setSearchParams({});
+        }
+    };
+
     const userActionContext = {
         onUserDetailsClick: userDetailsClickHandler,
         onUserDeleteClick: userDeleteClickHandler,
@@ -75,7 +91,7 @@ export default function UserSection() {
         <UserActionContextProvider value={userActionContext}>
             <div className="auth">
                 <section className="card users-container">
-                    <Search />
+                    <Search onSearch={searchHandler}/>
 
                     <UserList
                         users={users}
