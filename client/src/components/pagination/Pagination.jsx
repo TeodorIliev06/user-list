@@ -1,18 +1,54 @@
-export default function Pagination() {
+import { useEffect } from "react";
+
+export default function Pagination({
+    totalItems,
+    currentPage,
+    pageSize,
+    onPageChange,
+}) {
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    console.log(totalItems);
+    
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            onPageChange(totalPages);
+        }
+    }, [currentPage, totalPages, onPageChange]);
+
+    const pageChangeHandler = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            onPageChange(newPage, pageSize);
+        }
+    };
+
     return (
         <div className="pagination position">
             <div className="limits">
                 <span>Items per page:</span>
-                <select name="limit" className="limit" defaultValue={5}>
-                    <option value={5}>5</option>
-                    <option value={5}>10</option>
-                    <option value={5}>15</option>
-                    <option value={5}>20</option>
+                <select
+                    name="limit"
+                    className="limit"
+                    defaultValue={5}
+                    //+ converts string to number
+                    onChange={(e) => onPageChange(1, +e.target.value)}
+                >
+                    {[5, 10, 15, 20].map((size) => (
+                        <option key={size} value={size}>
+                            {size}
+                        </option>
+                    ))}
                 </select>
             </div>
-            <p className="pages">1 - 1 of 1</p>
+            <p className="pages">
+                Page {currentPage} of {totalPages}
+            </p>
             <div className="actions">
-                <button className="btn" title="First Page">
+                <button
+                    className="btn"
+                    title="First Page"
+                    onClick={() => pageChangeHandler(1)}
+                    disabled={currentPage === 1}
+                >
                     <svg
                         aria-hidden="true"
                         focusable="false"
@@ -29,7 +65,11 @@ export default function Pagination() {
                         ></path>
                     </svg>
                 </button>
-                <button className="btn" title="Previous Page">
+                <button className="btn"
+                    title="Previous Page"
+                    onClick={() => pageChangeHandler(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
                     <svg
                         aria-hidden="true"
                         focusable="false"
@@ -46,7 +86,11 @@ export default function Pagination() {
                         ></path>
                     </svg>
                 </button>
-                <button className="btn" title="Next Page">
+                <button className="btn"
+                    title="Next Page"
+                    onClick={() => pageChangeHandler(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
                     <svg
                         aria-hidden="true"
                         focusable="false"
@@ -63,7 +107,11 @@ export default function Pagination() {
                         ></path>
                     </svg>
                 </button>
-                <button className="btn" title="Last Page">
+                <button className="btn"
+                    title="Last Page"
+                    onClick={() => pageChangeHandler(totalPages)}
+                    disabled={currentPage === totalPages}
+                >
                     <svg
                         aria-hidden="true"
                         focusable="false"

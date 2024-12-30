@@ -9,15 +9,18 @@ import UserDetails from "./user-details/UserDetails";
 import UserList from "./user-list/UserList";
 import UserEdit from "./user-edit/UserEdit";
 
-import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
+import { useCreateUser, useGetAllUsers, useGetUserPagination } from "../../hooks/useUsers";
 import { UserActionContextProvider } from "../../contexts/UserActionContext";
 
 export default function UserSection() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [currentPage, pageSize, changePage] = useGetUserPagination();
 
-    const [users, isLoading, refetchUsers] = useGetAllUsers({
+    const [users, total, isLoading, refetchUsers] = useGetAllUsers({
         criteria: searchParams.get("criteria") || "",
         value: searchParams.get("value") || "",
+        currentPage,
+        pageSize,
     });
 
     const [showAddUser, setShowAddUser] = useState(false);
@@ -46,7 +49,6 @@ export default function UserSection() {
         try {
             await createUser(userData);
             await refetchUsers();
-
             setShowAddUser(false);
         } catch (error) {
             alert(`Failed to create user: ${error.message}`);
@@ -56,7 +58,6 @@ export default function UserSection() {
     const editUserHandler = async () => {
         try {
             await refetchUsers();
-
             setShowUserEditById(null);
         } catch (error) {
             alert(error.message);
@@ -66,7 +67,6 @@ export default function UserSection() {
     const deleteUserHandler = async () => {
         try {
             await refetchUsers();
-
             setShowUserDeleteById(null);
         } catch (error) {
             alert(error.message);
@@ -76,9 +76,15 @@ export default function UserSection() {
     const searchHandler = (criteria, value) => {
         if (criteria && value) {
             setSearchParams({ criteria, value });
+            // Reset to first page when searching
+            changePage(1);
         } else {
             setSearchParams({});
         }
+    };
+
+    const handlePageChange = (newPage, newPageSize) => {
+        changePage(newPage, newPageSize);
     };
 
     const userActionContext = {
@@ -130,12 +136,14 @@ export default function UserSection() {
 
                     <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
 
-                    <Pagination />
+                    <Pagination 
+                        totalItems={total}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                        onPageChange={handlePageChange}
+                    />
                 </section>
             </div>
-
         </UserActionContextProvider>
-
-
     );
 }
