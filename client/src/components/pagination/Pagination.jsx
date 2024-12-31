@@ -7,7 +7,6 @@ export default function Pagination({
     onPageChange,
 }) {
     const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-    console.log(totalItems);
     
     useEffect(() => {
         if (currentPage > totalPages) {

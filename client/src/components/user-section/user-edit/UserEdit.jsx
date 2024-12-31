@@ -9,7 +9,6 @@ export default function UserEdit({
     onEdit,
 }) {
     const [user, isLoading] = useGetUserById(userId);
-    console.log(user);
 
     const updateUser = useUpdateUser();
 

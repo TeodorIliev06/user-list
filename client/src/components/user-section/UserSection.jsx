@@ -9,12 +9,13 @@ import UserDetails from "./user-details/UserDetails";
 import UserList from "./user-list/UserList";
 import UserEdit from "./user-edit/UserEdit";
 
-import { useCreateUser, useGetAllUsers, useGetUserPagination } from "../../hooks/useUsers";
+import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
+import { usePagination } from "../../hooks/usePagination";
 import { UserActionContextProvider } from "../../contexts/UserActionContext";
 
 export default function UserSection() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [currentPage, pageSize, changePage] = useGetUserPagination();
+    const [currentPage, pageSize, changePage] = usePagination();
 
     const [users, total, isLoading, refetchUsers] = useGetAllUsers({
         criteria: searchParams.get("criteria") || "",
@@ -83,7 +84,7 @@ export default function UserSection() {
         }
     };
 
-    const handlePageChange = (newPage, newPageSize) => {
+    const pageChangeHandler = (newPage, newPageSize) => {
         changePage(newPage, newPageSize);
     };
 
@@ -97,7 +98,7 @@ export default function UserSection() {
         <UserActionContextProvider value={userActionContext}>
             <div className="auth">
                 <section className="card users-container">
-                    <Search onSearch={searchHandler}/>
+                    <Search onSearch={searchHandler} />
 
                     <UserList
                         users={users}
@@ -136,11 +137,11 @@ export default function UserSection() {
 
                     <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
 
-                    <Pagination 
+                    <Pagination
                         totalItems={total}
                         currentPage={currentPage}
                         pageSize={pageSize}
-                        onPageChange={handlePageChange}
+                        onPageChange={pageChangeHandler}
                     />
                 </section>
             </div>
