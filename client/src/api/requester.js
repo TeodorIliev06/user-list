@@ -24,19 +24,28 @@ export async function requester(method, url, data, skipAuth = false) {
 		options.body = JSON.stringify(data);
 	}
 
-	const response = await fetch(url, options);
+	try {
+		const response = await fetch(url, options);
 
-	if (response.status === 204) {
-		return;
+		if (response.status === 204) {
+			return;
+		}
+
+		const result = await response.json();
+
+		if (!response.ok) {
+			throw result;
+		}
+
+		return result;
+	} catch (error) {
+		if (error.status === 401) {
+			localStorage.removeItem('auth');
+
+			window.location.reload();
+		}
+		throw error;
 	}
-
-	const result = await response.json();
-
-	if (!response.ok) {
-		throw result;
-	}
-
-	return result;
 }
 export const get = requester.bind(null, "GET");
 export const post = requester.bind(null, "POST");
