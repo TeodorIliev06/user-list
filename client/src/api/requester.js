@@ -6,7 +6,7 @@ export async function requester(method, url, data, skipAuth = false) {
 	if (method !== "GET") {
 		options.method = method;
 	}
-
+	
 	const accessToken = getAccessToken();
 
 	if (accessToken && !skipAuth) {

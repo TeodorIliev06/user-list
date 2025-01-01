@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+
 import usePersistedState from "../hooks/usePersistedState";
 
 export const AuthContext = createContext({
@@ -7,10 +8,9 @@ export const AuthContext = createContext({
     isLoading: true,
     changeAuthState: (authState = {}) => null,
 });
-
 export function AuthContextProvider(props) {
-	const [authState, setAuthState] = usePersistedState('auth', {});
-    const [isLoading, setIsLoading] = usePersistedState('auth_loading', true);
+    const [authState, setAuthState] = usePersistedState('auth', {});
+    const [isLoading, setIsLoading] = useState(true);
 
     const changeAuthState = (state) => {
         setAuthState(state);
@@ -24,15 +24,13 @@ export function AuthContextProvider(props) {
         changeAuthState,
     };
 
-	return (
-		<AuthContext.Provider value={contextData}>
-			{props.children}
-		</AuthContext.Provider>
-	);
+    return (
+        <AuthContext.Provider value={contextData}>
+            {props.children}
+        </AuthContext.Provider>
+    );
 }
-
 export function useAuthContext() {
-	const authData = useContext(AuthContext);
-
-	return authData;
+    const authData = useContext(AuthContext);
+    return authData;
 }
