@@ -1,11 +1,12 @@
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useEffect } from "react";
 
 import Header from "../header/Header";
 import UserSection from "../user-section/UserSection";
 import Footer from "../footer/Footer";
 import Spinner from "../spinner/Spinner";
+
+import { useAuthContext } from "../../contexts/AuthContext";
 import { useLogin } from "../../hooks/useAuth";
-import { useEffect } from "react";
 
 export default function Home() {
     const { isLoading, isAuthenticated } = useAuthContext();
@@ -18,16 +19,15 @@ export default function Home() {
         }
     }, [isLoading]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <>
             <Header />
 
             <main className='main'>
-                {isAuthenticated ? <UserSection /> : <Spinner />}
+                {isAuthenticated
+                    ? <UserSection />
+                    : <Spinner />
+                }
             </main>
 
             <Footer />

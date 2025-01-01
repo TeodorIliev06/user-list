@@ -1,5 +1,4 @@
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
 
 import Pagination from "../pagination/Pagination";
 import Search from "../search/Search";
@@ -9,13 +8,15 @@ import UserDetails from "./user-details/UserDetails";
 import UserList from "./user-list/UserList";
 import UserEdit from "./user-edit/UserEdit";
 
-import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
+import { useModals } from "../../hooks/useModals";
 import { usePagination } from "../../hooks/usePagination";
+import { useCreateUser, useGetAllUsers } from "../../hooks/useUsers";
 import { UserActionContextProvider } from "../../contexts/UserActionContext";
 
 export default function UserSection() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [currentPage, pageSize, changePage] = usePagination();
+    const { modalState, openModal, closeModal } = useModals();
 
     const [users, total, isLoading, refetchUsers] = useGetAllUsers({
         criteria: searchParams.get("criteria") || "",
@@ -24,33 +25,19 @@ export default function UserSection() {
         pageSize,
     });
 
-    const [showAddUser, setShowAddUser] = useState(false);
-    const [showUserDetailsById, setShowUserDetailsById] = useState(null);
-    const [showUserDeleteById, setShowUserDeleteById] = useState(null);
-    const [showUserEditById, setShowUserEditById] = useState(null);
-
     const createUser = useCreateUser();
 
-    const addUserClickHandler = () => setShowAddUser(true);
-    const addUserCloseHandler = () => setShowAddUser(false);
-
-    const userDetailsClickHandler = (userId) => {
-        setShowUserDetailsById(userId);
-    }
-
-    const userDeleteClickHandler = (userId) => {
-        setShowUserDeleteById(userId);
-    }
-
-    const userEditClickHandler = (userId) => {
-        setShowUserEditById(userId);
-    }
+    const addUserClickHandler = () => openModal("userAdd");
+    const userDetailsClickHandler = (userId) => openModal("userDetails", userId);
+    const userDeleteClickHandler = (userId) => openModal("userDelete", userId);
+    const userEditClickHandler = (userId) => openModal("userEdit", userId);
 
     const addUserSaveHandler = async (userData) => {
         try {
             await createUser(userData);
             await refetchUsers();
-            setShowAddUser(false);
+
+            closeModal();
         } catch (error) {
             alert(`Failed to create user: ${error.message}`);
         }
@@ -59,7 +46,8 @@ export default function UserSection() {
     const editUserHandler = async () => {
         try {
             await refetchUsers();
-            setShowUserEditById(null);
+
+            closeModal();
         } catch (error) {
             alert(error.message);
         }
@@ -68,16 +56,17 @@ export default function UserSection() {
     const deleteUserHandler = async () => {
         try {
             await refetchUsers();
-            setShowUserDeleteById(null);
+
+            closeModal();
         } catch (error) {
             alert(error.message);
         }
-    }
+    };
 
     const searchHandler = (criteria, value) => {
         if (criteria && value) {
             setSearchParams({ criteria, value });
-            // Reset to first page when searching
+
             changePage(1);
         } else {
             setSearchParams({});
@@ -91,7 +80,26 @@ export default function UserSection() {
     const userActionContext = {
         onUserDetailsClick: userDetailsClickHandler,
         onUserDeleteClick: userDeleteClickHandler,
-        onUserEditClick: userEditClickHandler
+        onUserEditClick: userEditClickHandler,
+    };
+
+    const renderModals = () => {
+        if (!modalState) {
+            return null;
+        }
+
+        switch (modalState.type) {
+            case "userAdd":
+                return <UserAdd onClose={closeModal} onSave={addUserSaveHandler} />;
+            case "userDetails":
+                return <UserDetails userId={modalState.payload} onClose={closeModal} />;
+            case "userDelete":
+                return <UserDelete userId={modalState.payload} onClose={closeModal} onDelete={deleteUserHandler} />;
+            case "userEdit":
+                return <UserEdit userId={modalState.payload} onClose={closeModal} onEdit={editUserHandler} />;
+            default:
+                return null;
+        }
     };
 
     return (
@@ -100,42 +108,13 @@ export default function UserSection() {
                 <section className="card users-container">
                     <Search onSearch={searchHandler} />
 
-                    <UserList
-                        users={users}
-                        isLoading={isLoading}
-                    />
+                    <UserList users={users} isLoading={isLoading} />
 
-                    {showAddUser && (
-                        <UserAdd
-                            onClose={addUserCloseHandler}
-                            onSave={addUserSaveHandler}
-                        />
-                    )}
+                    {renderModals()}
 
-                    {showUserDetailsById && (
-                        <UserDetails
-                            userId={showUserDetailsById}
-                            onClose={() => setShowUserDetailsById(null)}
-                        />
-                    )}
-
-                    {showUserDeleteById && (
-                        <UserDelete
-                            userId={showUserDeleteById}
-                            onClose={() => setShowUserDeleteById(null)}
-                            onDelete={deleteUserHandler}
-                        />
-                    )}
-
-                    {showUserEditById && (
-                        <UserEdit
-                            userId={showUserEditById}
-                            onClose={() => setShowUserEditById(null)}
-                            onEdit={editUserHandler}
-                        />
-                    )}
-
-                    <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
+                    <button className="btn-add btn" onClick={addUserClickHandler}>
+                        Add new user
+                    </button>
 
                     <Pagination
                         totalItems={total}
