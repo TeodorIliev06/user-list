@@ -1,5 +1,8 @@
 import { useUserActionContext } from "../../../../contexts/UserActionContext";
 import { formatDate } from "../../../../utils/dateUtils";
+import { getUserProperty } from "../../../../utils/userUtils";
+
+const FALLBACK_IMAGE_URL = "/default_user.svg";
 
 export default function UserListItem({
     user
@@ -13,13 +16,13 @@ export default function UserListItem({
     return (
         <tr>
             <td>
-                <img src={user.imageUrl}
+                <img src={user.imageUrl || FALLBACK_IMAGE_URL}
                     alt={`${user.firstName}'s profile`} className="image" />
             </td>
-            <td>{user.firstName}</td>
-            <td>{user.lastName}</td>
-            <td>{user.email}</td>
-            <td>{user.phoneNumber}</td>
+            <td>{getUserProperty(user, 'firstName')}</td>
+            <td>{getUserProperty(user, 'lastName')}</td>
+            <td>{getUserProperty(user, 'email')}</td>
+            <td>{getUserProperty(user, 'phoneNumber')}</td>
             <td>{formatDate(user.createdAt)}</td>
             <td className="actions">
                 <button className="btn edit-btn" title="Edit" onClick={() => onUserEditClick(user._id)}>

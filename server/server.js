@@ -1409,7 +1409,6 @@
                 phoneNumber: "0899999999",
                 createdAt: "2023-11-01T07:22:00.358Z",
                 updatedAt: "2023-11-01T07:22:00.358Z",
-                imageUrl: "https://cdn3.vectorstock.com/i/1000x1000/54/17/person-gray-photo-placeholder-man-vector-24005417.jpg",
                 address: {
                     country: "България",
                     city: "Перник",
@@ -1425,7 +1424,6 @@
                 phoneNumber: "1234567890",
                 createdAt: "2023-11-01T07:22:00.358Z",
                 updatedAt: "2023-11-01T07:22:00.358Z",
-                imageUrl: "https://cdn3.vectorstock.com/i/1000x1000/54/17/person-gray-photo-placeholder-man-vector-24005417.jpg",
                 address: {
                     country: "USA",
                     city: "New York",
@@ -1441,7 +1439,6 @@
                 phoneNumber: "9876543210",
                 createdAt: "2023-11-01T07:22:00.358Z",
                 updatedAt: "2023-11-01T07:22:00.358Z",
-                imageUrl: "https://cdn3.vectorstock.com/i/1000x1000/54/17/person-gray-photo-placeholder-man-vector-24005417.jpg",
                 address: {
                     country: "Canada",
                     city: "Toronto",

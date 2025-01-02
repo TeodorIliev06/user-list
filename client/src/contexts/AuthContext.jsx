@@ -10,7 +10,7 @@ export const AuthContext = createContext({
 });
 export function AuthContextProvider(props) {
     const [authState, setAuthState] = usePersistedState('auth', {});
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = usePersistedState('auth_login', true);
 
     const changeAuthState = (state) => {
         setAuthState(state);

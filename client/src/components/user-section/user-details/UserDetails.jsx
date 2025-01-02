@@ -1,7 +1,10 @@
 import { useGetUserById } from "../../../hooks/useUsers";
-import { formatAddress } from "../../../utils/addressUtils";
+import { formatAddress, getUserProperty } from "../../../utils/userUtils";
 import { formatDate } from "../../../utils/dateUtils";
+
 import Spinner from "../../spinner/Spinner";
+
+const FALLBACK_IMAGE_URL = "/default_user.svg";
 
 export default function UserDetails({
     userId,
@@ -41,7 +44,7 @@ export default function UserDetails({
                             <>
                                 <div className="image-container">
                                     <img
-                                        src={user.imageUrl}
+                                        src={user.imageUrl || FALLBACK_IMAGE_URL}
                                         alt={`${user.firstName}'s profile`}
                                         className="image"
                                     />
@@ -50,10 +53,13 @@ export default function UserDetails({
                                     <p>User Id: <strong>{user._id}</strong></p>
                                     <p>
                                         Full Name:
-                                        <strong> {user.firstName} {user.lastName}</strong>
+                                        <strong> {getUserProperty(user, 'firstName', '').trim() || getUserProperty(user, 'lastName', '').trim()
+                                            ? `${getUserProperty(user, 'firstName', '')} ${getUserProperty(user, 'lastName', '')}`.trim()
+                                            : 'Not provided'}
+                                        </strong>
                                     </p>
-                                    <p>Email: <strong>{user.email}</strong></p>
-                                    <p>Phone Number: <strong>{user.phoneNumber}</strong></p>
+                                    <p>Email: <strong>{getUserProperty(user, 'email')}</strong></p>
+                                    <p>Phone Number: <strong>{getUserProperty(user, 'phoneNumber')}</strong></p>
                                     <p>
                                         Address:
                                         <strong> {formatAddress(user.address)}</strong>
