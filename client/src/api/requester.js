@@ -40,7 +40,7 @@ export async function requester(method, url, data, skipAuth = false) {
 		return result;
 	} catch (error) {
 		if (error.status === 401) {
-			localStorage.removeItem('auth');
+			sessionStorage.removeItem('auth');
 
 			window.location.reload();
 		}
