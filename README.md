@@ -4,7 +4,7 @@ A modern, full-stack React application for managing users, built as part of the 
 
 ---
 
-![User List Screenshot](client/public/user-list-preview.png)
+![User List Screenshot](client/public/assets/user-list-preview.png)
 
 ---
 
@@ -46,6 +46,12 @@ A modern, full-stack React application for managing users, built as part of the 
    npm run dev
    ```
    - The app will be available at `http://localhost:5173`
+
+## 🖼️ Feature Gallery
+
+| Edit User | User Details |
+|-----------|--------------|
+| ![Edit User](client/public/assets/edit-user-preview.png) | ![User Details](client/public/assets/user-details-preview.png) |
 
 ## 📁 Project Structure
 

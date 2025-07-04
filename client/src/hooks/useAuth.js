@@ -12,9 +12,11 @@ export const useLogin = () => {
 
             const { password: _, ...result } = await login(email, password);
             changeAuthState(result);
+
             return result;
         } catch (error) {
             changeAuthState({});
+            
             throw error;
         }
     }, [changeAuthState]);

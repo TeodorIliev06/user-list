@@ -24,6 +24,14 @@ export async function requester(method, url, data, skipAuth = false) {
 		options.body = JSON.stringify(data);
 	}
 
+	// Add X-Admin: true for PUT/DELETE to /data/testUsers endpoints
+	if ((method === "PUT" || method === "DELETE") && url.includes("/data/testUsers")) {
+		options.headers = {
+			...options.headers,
+			"X-Admin": "true",
+		};
+	}
+
 	try {
 		const response = await fetch(url, options);
 
@@ -40,8 +48,8 @@ export async function requester(method, url, data, skipAuth = false) {
 		return result;
 	} catch (error) {
 		if (error.status === 401) {
-			sessionStorage.removeItem('auth');
-
+			localStorage.removeItem('auth');
+			
 			window.location.reload();
 		}
 		throw error;

@@ -13,9 +13,9 @@ export const getAll = async (query = "") => {
 export const getOne = (userId) => request.get(`${BASE_URL}/${userId}`);
 
 const create = (userData) => request.post(`${BASE_URL}`, userData);
-const remove = (userId) => request.del(`${BASE_URL}/${userId}`);
+const remove = (userId) => request.del(`${BASE_URL}/${userId}`, undefined, true);
 const update = (userId, userData) =>
-	request.put(`${BASE_URL}/${userId}`, userData);
+	request.put(`${BASE_URL}/${userId}`, userData, true);
 
 const usersAPI = {
 	getAll,
